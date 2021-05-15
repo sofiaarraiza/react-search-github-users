@@ -13,11 +13,8 @@ const GithubProvider = ({ children }) => {
   const [githubUser, setGithubUser] = useState(mockUser);
   const [repos, setRepos] = useState(mockRepos);
   const [followers, setFollowers] = useState(mockFollowers);
-  // request loading
   const [requests, setRequests] = useState(0);
   const [loading, setIsLoading] = useState(false);
-
-  //error
   const [error, setError] = useState({ show: false, msg: "" });
 
   const searchGithubUser = async (user) => {
@@ -44,12 +41,13 @@ const GithubProvider = ({ children }) => {
       ])
         .then((results) => {
           const [repos, followers] = results;
-          const status = "fullfilled";
+          const status = "fulfilled";
+          console.log("followers", followers);
           if (repos.status === status) {
-            setRepos(repos.data);
+            setRepos(repos.value.data);
           }
           if (followers.status === status) {
-            setFollowers(followers.data);
+            setFollowers(followers.value.data);
           }
         })
         .catch((err) => console.log(err));
@@ -81,6 +79,7 @@ const GithubProvider = ({ children }) => {
   }
 
   useEffect(() => checkRequests(), []);
+  console.log("this is followers", followers);
   return (
     <GithubContext.Provider
       value={{
